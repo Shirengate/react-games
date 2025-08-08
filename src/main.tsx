@@ -1,10 +1,22 @@
 import { createRoot } from "react-dom/client";
-import App from "./App.tsx";
 import "./assets/index.scss";
 import { store } from "./store/index.ts";
 import { Provider } from "react-redux";
+import { createBrowserRouter, RouterProvider } from "react-router";
+import MainLayout from "./layout/MainLayout/index.tsx";
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <MainLayout />,
+    children: [
+      {
+        path: "/",
+      },
+    ],
+  },
+]);
 createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
-    <App />
+    <RouterProvider router={router} />
   </Provider>
 );
