@@ -8,6 +8,7 @@ interface PlatformDetails {
   id: number;
   slug: string;
   name: string;
+  image_background: string;
 }
 
 interface PlatformRequirements {
@@ -20,7 +21,17 @@ interface Platform {
   released_at: string;
   requirements: PlatformRequirements;
 }
-
+interface Genre {
+  games_count: number;
+  id: number;
+  image_background: string;
+  name: string;
+  slug: string;
+}
+interface Screens {
+  id: number;
+  image: string;
+}
 interface Game {
   id: number;
   slug: string;
@@ -30,6 +41,8 @@ interface Game {
   background_image: string;
   rating: number;
   rating_top: number;
+  genres: Genre[];
+  short_screenshots: Screens[];
   ratings: Record<string, unknown>;
   ratings_count: number;
   reviews_text_count: string;
@@ -49,4 +62,4 @@ interface GamesApiResponse {
   previous: string;
   results: Game[];
 }
-export type { GamesApiResponse, Game };
+export type { GamesApiResponse, Game, Genre };
