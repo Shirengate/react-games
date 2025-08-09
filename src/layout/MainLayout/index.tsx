@@ -10,7 +10,9 @@ const index: FC = () => {
   return (
     <div className="wrapper">
       <Header />
-      <Outlet />
+      <main className="main-content">
+        <Outlet />
+      </main>
       <Footer />
     </div>
   );

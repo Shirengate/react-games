@@ -4,6 +4,8 @@ import { store } from "./store/index.ts";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import MainLayout from "./layout/MainLayout/index.tsx";
+import MainPage from "./pages/MainPage/MainPage.tsx";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -11,6 +13,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
+        element: <MainPage />,
       },
     ],
   },

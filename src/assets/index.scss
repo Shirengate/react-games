@@ -3,9 +3,8 @@
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   min-height: 100dvh;
-  min-width: 100dvw;
   height: max-content;
-  width: 100%;
   background-color: $main_bg;
   color: $main_color;
+  overflow-x: hidden;
 }

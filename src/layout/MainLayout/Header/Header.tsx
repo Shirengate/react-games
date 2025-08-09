@@ -13,7 +13,7 @@ export default function Header() {
               height="20"
               viewBox="0 0 24 24"
             >
-              <g fill="none" stroke="currentColor" stroke-width="1.5">
+              <g fill="none" stroke="currentColor" strokeWidth="1.5">
                 <circle cx="11.5" cy="11.5" r="9.5" />
                 <path strokeLinecap="round" d="m20 20l2 2" />
               </g>
