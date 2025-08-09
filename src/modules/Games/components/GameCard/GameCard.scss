@@ -9,6 +9,8 @@
   display: flex;
   flex-direction: column;
   transition: scale 0.4s;
+  border-top-right-radius: 12px;
+  border-top-left-radius: 12px;
   position: relative;
   &:hover {
     scale: (1.02);
