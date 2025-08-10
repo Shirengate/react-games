@@ -12,8 +12,10 @@
   border-top-right-radius: 12px;
   border-top-left-radius: 12px;
   position: relative;
+  max-height: 450px;
+  max-width: 400px;
   &:hover {
-    scale: (1.02);
+    scale: (1.04);
   }
 
   &__media {

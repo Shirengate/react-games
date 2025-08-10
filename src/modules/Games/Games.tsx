@@ -1,51 +1,81 @@
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import type { GamesApiResponse, Game } from "../../shared/types/responses.ts";
+import type { GamesApiResponse } from "../../shared/types/responses.ts";
 import { useIntersectionObserver } from "@siberiacancode/reactuse";
-import { useEffect } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { addGames, setTotalGames } from "./reducer/games.ts";
 import instance from "../../shared/api/axios";
 import classes from "./styles.module.scss";
 import Loader from "./components/UI/Loader/Loader.tsx";
-import GameCard from "./components/GameCard/GameCard.tsx";
+import TotalGames from "./components/TotalGames/TotalGames.tsx";
+import GamesFilters from "./components/GamesFilters/GamesFilters.tsx";
+import GamesList from "./components/GamesList/GamesList.tsx";
 
 const Games = () => {
   const dispatch = useAppDispatch();
   const games = useAppSelector((state) => state.games.games);
   const totalGames = useAppSelector((state) => state.games.totalCount);
-  async function fetchData() {
-    try {
-      const { data } = await instance<GamesApiResponse>({
-        method: "get",
-        url: "/games",
-      });
-      dispatch(setTotalGames(data.count));
-      dispatch(addGames(data.results));
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [threshold, setThreshold] = useState(false);
+  const gamesListProps = useMemo(() => ({ games, loading }), [games, loading]);
+  const handleIntersection = useCallback(
+    (e: IntersectionObserverEntry) => {
+      if (e.isIntersecting && !loading && !threshold) {
+        setPage((prev) => prev + 1);
+      }
+    },
+    [loading, threshold]
+  );
+  const { ref } = useIntersectionObserver<HTMLDivElement>({
+    threshold: 1,
+    onChange: handleIntersection,
+  });
+  const fetchData = useCallback(
+    async (page: number) => {
+      setThreshold(true);
+      try {
+        const { data } = await instance<GamesApiResponse>({
+          method: "get",
+          url: "/games",
+          params: { page },
+        });
+        dispatch(setTotalGames(data.count));
+        dispatch(addGames(data.results));
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setThreshold(false);
+      }
+    },
+    [dispatch]
+  );
+  const firstLoad = useCallback(
+    async (page: number) => {
+      setLoading(true);
+      await fetchData(page);
+      setLoading(false);
+    },
+    [fetchData]
+  );
   useEffect(() => {
-    fetchData();
-  }, []);
+    firstLoad(1);
+  }, [firstLoad]);
+  useEffect(() => {
+    if (page > 1) {
+      fetchData(page);
+    }
+  }, [page, fetchData]);
   return (
     <div className={classes.wrapper}>
       <h1 className={classes.title}>All Games</h1>
       <div className={classes["catalog__options"]} style={{ margin: "20px 0" }}>
-        <div className={classes["catalog__options-filters"]}>
-          filters will be soon
-        </div>
-        <div className={classes["catalog__options-total"]}>
-          total {totalGames} games
-        </div>
+        <GamesFilters />
+        <TotalGames totalGames={totalGames} />
       </div>
 
       <div className={classes.content}>
-        <div className={classes.catalog}>
-          {games.map((item) => {
-            return <GameCard game={item} key={item.id} />;
-          })}
-        </div>
-        <div className={classes.loaderWrapper}>
+        <GamesList {...gamesListProps} />
+        <div ref={ref}>
           <Loader />
         </div>
       </div>
