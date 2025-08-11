@@ -1,26 +1,19 @@
-import { useRef, type FC } from "react";
+import { type FC } from "react";
 import type { Game } from "../../../../shared/types/responses";
-import { useHover } from "@siberiacancode/reactuse";
 import "./GameCard.scss";
+import LazyImg from "../UI/LazyImg/LazyImg";
 
 interface GameCardProps {
   game: Game;
+  hovering: boolean;
 }
 
-const GameCard: FC<GameCardProps> = ({ game }) => {
-  const ref = useRef(null);
-  const hovering = useHover(ref);
-
+const GameCard: FC<GameCardProps> = ({ game, hovering }) => {
   const chartInfo = `#1 Top ${new Date(game.released).getFullYear()}`;
-
   return (
-    <div
-      className={`game-card ${!hovering ? "opened" : ""}`}
-      ref={ref}
-      style={{ zIndex: hovering ? 100 : "" }}
-    >
+    <div className={`game-card ${hovering ? "opened" : ""} `}>
       <div className="game-card__media">
-        <img className="img" src={game.background_image} alt={game.name} />
+        <LazyImg src={game.background_image} name={game.name} />
       </div>
       <div className="game-card__data">
         <div className="game-card__top">

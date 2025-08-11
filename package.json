@@ -15,6 +15,7 @@
     "@tanstack/react-virtual": "^3.13.12",
     "@virtual-grid/react": "^2.0.3",
     "axios": "^1.11.0",
+    "lodash": "^4.17.21",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-loading-skeleton": "^3.5.0",

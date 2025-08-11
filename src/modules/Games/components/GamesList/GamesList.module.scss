@@ -1,0 +1,24 @@
+.wrapper {
+  width: 100%;
+  height: 100vh;
+  overflow: auto;
+  position: relative;
+  scrollbar-width: none;
+}
+
+.virtualWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.itemWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+}
+
+.game-card {
+  width: 100%;
+  height: 100%;
+}

@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import Skeleton from "react-loading-skeleton";
 import classes from "./SkeletonGameList.module.scss";
 import "react-loading-skeleton/dist/skeleton.css";
 

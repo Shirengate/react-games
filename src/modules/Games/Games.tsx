@@ -1,11 +1,9 @@
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import type { GamesApiResponse } from "../../shared/types/responses.ts";
-import { useIntersectionObserver } from "@siberiacancode/reactuse";
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { addGames, setTotalGames } from "./reducer/games.ts";
 import instance from "../../shared/api/axios";
 import classes from "./styles.module.scss";
-import Loader from "./components/UI/Loader/Loader.tsx";
 import TotalGames from "./components/TotalGames/TotalGames.tsx";
 import GamesFilters from "./components/GamesFilters/GamesFilters.tsx";
 import GamesList from "./components/GamesList/GamesList.tsx";
@@ -17,7 +15,7 @@ const Games = () => {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [threshold, setThreshold] = useState(false);
-  const gamesListProps = useMemo(() => ({ games, loading }), [games, loading]);
+
   const handleIntersection = useCallback(
     (e: IntersectionObserverEntry) => {
       if (e.isIntersecting && !loading && !threshold) {
@@ -26,10 +24,10 @@ const Games = () => {
     },
     [loading, threshold]
   );
-  const { ref } = useIntersectionObserver<HTMLDivElement>({
-    threshold: 1,
-    onChange: handleIntersection,
-  });
+  const gamesListProps = useMemo(
+    () => ({ games, loading, handleIntersection }),
+    [games, loading, handleIntersection]
+  );
   const fetchData = useCallback(
     async (page: number) => {
       setThreshold(true);
@@ -75,9 +73,6 @@ const Games = () => {
 
       <div className={classes.content}>
         <GamesList {...gamesListProps} />
-        <div ref={ref}>
-          <Loader />
-        </div>
       </div>
     </div>
   );
