@@ -1,7 +1,8 @@
-import { type FC } from "react";
+import { useState, type FC } from "react";
 import type { Game } from "../../../../shared/types/responses";
 import "./GameCard.scss";
 import LazyImg from "../UI/LazyImg/LazyImg";
+import { useIntersectionObserver } from "@siberiacancode/reactuse";
 
 interface GameCardProps {
   game: Game;
@@ -9,11 +10,19 @@ interface GameCardProps {
 }
 
 const GameCard: FC<GameCardProps> = ({ game, hovering }) => {
+  const [viewState, setViewState] = useState(false);
+  const { ref, entry } = useIntersectionObserver<HTMLDivElement>((e) => {
+    if (e.isIntersecting) {
+      setViewState(true);
+    } else {
+      setViewState(false);
+    }
+  });
   const chartInfo = `#1 Top ${new Date(game.released).getFullYear()}`;
   return (
-    <div className={`game-card ${hovering ? "opened" : ""} `}>
+    <div ref={ref} className={`game-card ${hovering ? "opened" : ""} `}>
       <div className="game-card__media">
-        <LazyImg src={game.background_image} name={game.name} />
+        <LazyImg src={viewState ? game.background_image : ""} />
       </div>
       <div className="game-card__data">
         <div className="game-card__top">
@@ -32,9 +41,7 @@ const GameCard: FC<GameCardProps> = ({ game, hovering }) => {
           )}
         </div>
 
-        <div className="game-card__name">
-          {game.name} <div className="target-icon">🎯</div>
-        </div>
+        <div className="game-card__name">{game.name}</div>
 
         <button className="game-card__added">
           <span className="game-card__added-plus">+</span>

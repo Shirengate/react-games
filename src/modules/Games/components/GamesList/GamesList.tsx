@@ -3,9 +3,13 @@ import type { Game } from "../../../../shared/types/responses";
 import SkeletonGameList from "../UI/Sleketon/SkeletonGameList/SkeletonGameList";
 import classes from "../../styles.module.scss";
 import GameCard from "../GameCard/GameCard";
-import useResizeObserver from "../../hooks/useResizeObserver";
+// import useResizeObserver from "../../hooks/useResizeObserver";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { throttle, useIntersectionObserver } from "@siberiacancode/reactuse";
+import {
+  throttle,
+  useIntersectionObserver,
+  useResizeObserver,
+} from "@siberiacancode/reactuse";
 import style from "./GamesList.module.scss";
 import Loader from "../UI/Loader/Loader";
 
@@ -30,7 +34,12 @@ const GamesList: FC<GameListProps> = memo(
       x: 20,
       y: 20,
     });
-    const { width: containerWidth } = useResizeObserver(parentRef);
+    useResizeObserver(parentRef, {
+      onChange: (e) => {
+        const clientWidth = e[0].target.clientWidth;
+        handleResize(clientWidth);
+      },
+    });
     const rowVirtualizer = useVirtualizer({
       count: Math.ceil(games.length / columns),
       getScrollElement: () => parentRef.current,
@@ -59,7 +68,7 @@ const GamesList: FC<GameListProps> = memo(
       if (width <= BREAKPOINT.md) return 2;
       return 4;
     };
-    const handleResize = throttle(() => {
+    const handleResize = throttle((containerWidth) => {
       const newGap = getItemGap(containerWidth);
       const newColumns = getColumnsCount(containerWidth);
 
@@ -67,10 +76,6 @@ const GamesList: FC<GameListProps> = memo(
       setColumns(newColumns);
     }, 200);
 
-    useEffect(() => {
-      if (!containerWidth) return;
-      handleResize();
-    }, [containerWidth]);
     const [hoveredCardId, setHoveredCardId] = useState<number | null>(null);
 
     const handleMouseEnter = useCallback((id: number) => {
@@ -110,7 +115,7 @@ const GamesList: FC<GameListProps> = memo(
 
               return (
                 <div
-                  key={itemIndex}
+                  key={item.id}
                   className={style.itemWrapper}
                   onMouseEnter={() => handleMouseEnter(item.id)}
                   onMouseLeave={handleMouseLeave}

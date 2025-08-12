@@ -7,30 +7,38 @@ import classes from "./styles.module.scss";
 import TotalGames from "./components/TotalGames/TotalGames.tsx";
 import GamesFilters from "./components/GamesFilters/GamesFilters.tsx";
 import GamesList from "./components/GamesList/GamesList.tsx";
+import { shallowEqual } from "react-redux";
 
 const Games = () => {
   const dispatch = useAppDispatch();
-  const games = useAppSelector((state) => state.games.games);
+  const games = useAppSelector((state) => state.games.games, shallowEqual);
   const totalGames = useAppSelector((state) => state.games.totalCount);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [threshold, setThreshold] = useState(false);
-
+  const [state, setState] = useState({
+    page: 1,
+    loading: false,
+    threshold: false,
+  });
+  type StateUnion = {
+    [K in keyof typeof state]: { [P in K]: (typeof state)[P] };
+  }[keyof typeof state];
+  const updateState = useCallback((newState: StateUnion) => {
+    setState((prev) => ({ ...prev, ...newState }));
+  }, []);
   const handleIntersection = useCallback(
     (e: IntersectionObserverEntry) => {
-      if (e.isIntersecting && !loading && !threshold) {
-        setPage((prev) => prev + 1);
+      if (e.isIntersecting && !state.loading && !state.threshold) {
+        updateState({ page: state.page + 1 });
       }
     },
-    [loading, threshold]
+    [state, updateState]
   );
   const gamesListProps = useMemo(
-    () => ({ games, loading, handleIntersection }),
-    [games, loading, handleIntersection]
+    () => ({ games, loading: state.loading, handleIntersection }),
+    [games, state.loading, handleIntersection]
   );
   const fetchData = useCallback(
     async (page: number) => {
-      setThreshold(true);
+      updateState({ threshold: true });
       try {
         const { data } = await instance<GamesApiResponse>({
           method: "get",
@@ -42,27 +50,24 @@ const Games = () => {
       } catch (error) {
         console.error(error);
       } finally {
-        setThreshold(false);
+        updateState({ threshold: false });
       }
     },
-    [dispatch]
+    [dispatch, updateState]
   );
-  const firstLoad = useCallback(
-    async (page: number) => {
-      setLoading(true);
-      await fetchData(page);
-      setLoading(false);
-    },
-    [fetchData]
-  );
+  const firstLoad = useCallback(async () => {
+    updateState({ loading: true });
+    await fetchData(1);
+    updateState({ loading: false });
+  }, [fetchData, updateState]);
+
   useEffect(() => {
-    firstLoad(1);
-  }, [firstLoad]);
-  useEffect(() => {
-    if (page > 1) {
-      fetchData(page);
+    if (state.page > 1) {
+      fetchData(state.page);
+    } else {
+      firstLoad();
     }
-  }, [page, fetchData]);
+  }, [state.page, fetchData, firstLoad]);
   return (
     <div className={classes.wrapper}>
       <h1 className={classes.title}>All Games</h1>

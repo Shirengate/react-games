@@ -5,7 +5,6 @@ import Skeleton from "react-loading-skeleton";
 
 interface LazyImgProps {
   src: string;
-  name: string;
 }
 const skeletonTheme = {
   baseColor: "#2a2a2a",
@@ -14,27 +13,12 @@ const skeletonTheme = {
   duration: 1.5,
 };
 const LazyImg: FC<LazyImgProps> = ({ src }) => {
-  const [placeholder, setPlaceholder] = useState(false);
-  const { ref } = useIntersectionObserver<HTMLImageElement>({
-    threshold: 0.1,
-    onChange: (e) => {
-      if (e.isIntersecting) {
-        setPlaceholder(false);
-      } else {
-        setPlaceholder(true);
-      }
-    },
-  });
   return (
     <>
-      {placeholder ? (
+      {src.length === 0 ? (
         <Skeleton className="img" height="300px" {...skeletonTheme} />
       ) : (
-        <div
-          className="img"
-          ref={ref}
-          style={{ backgroundImage: `url('${src}')` }}
-        ></div>
+        <div className="img" style={{ backgroundImage: `url('${src}')` }}></div>
       )}
     </>
   );
