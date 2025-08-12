@@ -2,7 +2,7 @@ import { useState, type FC } from "react";
 import type { Game } from "../../../../shared/types/responses";
 import "./GameCard.scss";
 import LazyImg from "../UI/LazyImg/LazyImg";
-import { useIntersectionObserver } from "@siberiacancode/reactuse";
+import { useIntersectionObserver, useWindowSize } from "@siberiacancode/reactuse";
 
 interface GameCardProps {
   game: Game;
@@ -10,11 +10,23 @@ interface GameCardProps {
 }
 
 const GameCard: FC<GameCardProps> = ({ game, hovering }) => {
-  const [viewState, setViewState] = useState(false);
-  const { ref, entry } = useIntersectionObserver<HTMLDivElement>((e) => {
+  const [viewState, setViewState] = useState(true);
+  const { width, height } = useWindowSize();
+  const { ref } = useIntersectionObserver<HTMLDivElement>((e) => {
     if (e.isIntersecting) {
+
       setViewState(true);
     } else {
+      const {top} = e.boundingClientRect;
+      if(top <= 0){
+        if(Math.abs(top) <= 800){
+          return setViewState(true)
+        }else{
+          if(Math.abs(top - height) <= 800){
+            return  setViewState(true);
+          }
+        }
+      }
       setViewState(false);
     }
   });

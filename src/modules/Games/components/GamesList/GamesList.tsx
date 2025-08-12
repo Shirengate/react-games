@@ -21,6 +21,7 @@ interface GameListProps {
 const BREAKPOINT = {
   sm: 768,
   md: 1024,
+  lg:1680
 };
 const CARD_SIZE = {
   width: 450,
@@ -60,12 +61,14 @@ const GamesList: FC<GameListProps> = memo(
 
     const getItemGap = (width: number) => {
       if (width <= BREAKPOINT.sm) return { x: 0, y: 15 };
+      if (width <= BREAKPOINT.lg) return { x: 40, y: 15 };
       return { x: 10, y: 20 };
     };
 
     const getColumnsCount = (width: number) => {
       if (width <= BREAKPOINT.sm) return 1;
       if (width <= BREAKPOINT.md) return 2;
+      if(width <= BREAKPOINT.lg) return 3
       return 4;
     };
     const handleResize = throttle((containerWidth) => {

@@ -1,6 +1,5 @@
-import { useState, type FC } from "react";
+import {  useEffect, useState, type FC } from "react";
 import "./LazyImg.scss";
-import { useIntersectionObserver } from "@siberiacancode/reactuse";
 import Skeleton from "react-loading-skeleton";
 
 interface LazyImgProps {
@@ -13,9 +12,21 @@ const skeletonTheme = {
   duration: 1.5,
 };
 const LazyImg: FC<LazyImgProps> = ({ src }) => {
+  const [panding, setPanding] = useState(true);
+  useEffect(() => {
+    if(src.length === 0){
+      return setPanding(true)
+    }else{
+      let img = document.createElement("img");
+      img.onload = function(){
+        setPanding(false)
+      }
+      img.src = src
+    }
+  }, [src])
   return (
     <>
-      {src.length === 0 ? (
+      { panding ? (
         <Skeleton className="img" height="300px" {...skeletonTheme} />
       ) : (
         <div className="img" style={{ backgroundImage: `url('${src}')` }}></div>
