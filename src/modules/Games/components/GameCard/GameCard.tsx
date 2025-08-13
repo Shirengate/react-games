@@ -1,8 +1,11 @@
-import { useState, type FC } from "react";
+import { memo, useState, type FC } from "react";
 import type { Game } from "../../../../shared/types/responses";
 import "./GameCard.scss";
 import LazyImg from "../UI/LazyImg/LazyImg";
-import { useIntersectionObserver, useWindowSize } from "@siberiacancode/reactuse";
+import {
+  useIntersectionObserver,
+  useWindowSize,
+} from "@siberiacancode/reactuse";
 
 interface GameCardProps {
   game: Game;
@@ -11,22 +14,19 @@ interface GameCardProps {
 
 const GameCard: FC<GameCardProps> = ({ game, hovering }) => {
   const [viewState, setViewState] = useState(true);
-  const { width, height } = useWindowSize();
+  const { height } = useWindowSize();
   const { ref } = useIntersectionObserver<HTMLDivElement>((e) => {
     if (e.isIntersecting) {
-
-      setViewState(true);
+      return;
     } else {
-      const {top} = e.boundingClientRect;
-      if(top <= 0){
-        if(Math.abs(top) <= 800){
-          return setViewState(true)
-        }else{
-          if(Math.abs(top - height) <= 800){
-            return  setViewState(true);
-          }
-        }
+      const { top } = e.boundingClientRect;
+      const isNearTopEdge = top <= 0 && Math.abs(top) <= 500;
+      const isNearBottomEdge = top > 0 && Math.abs(top - height) <= 500;
+
+      if (isNearTopEdge || isNearBottomEdge) {
+        return setViewState(true);
       }
+
       setViewState(false);
     }
   });
@@ -102,4 +102,4 @@ const GameCard: FC<GameCardProps> = ({ game, hovering }) => {
   );
 };
 
-export default GameCard;
+export default memo(GameCard);

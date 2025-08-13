@@ -1,4 +1,4 @@
-import {  useEffect, useState, type FC } from "react";
+import { memo, useEffect, useState, type FC } from "react";
 import "./LazyImg.scss";
 import Skeleton from "react-loading-skeleton";
 
@@ -12,21 +12,21 @@ const skeletonTheme = {
   duration: 1.5,
 };
 const LazyImg: FC<LazyImgProps> = ({ src }) => {
-  const [panding, setPanding] = useState(true);
+  const [panding, setPanding] = useState(false);
   useEffect(() => {
-    if(src.length === 0){
-      return setPanding(true)
-    }else{
-      let img = document.createElement("img");
-      img.onload = function(){
-        setPanding(false)
-      }
-      img.src = src
+    if (src.length === 0) {
+      return setPanding(true);
+    } else {
+      const img = document.createElement("img");
+      img.onload = function () {
+        setPanding(false);
+      };
+      img.src = src;
     }
-  }, [src])
+  }, [src]);
   return (
     <>
-      { panding ? (
+      {panding ? (
         <Skeleton className="img" height="300px" {...skeletonTheme} />
       ) : (
         <div className="img" style={{ backgroundImage: `url('${src}')` }}></div>
@@ -34,4 +34,4 @@ const LazyImg: FC<LazyImgProps> = ({ src }) => {
     </>
   );
 };
-export default LazyImg;
+export default memo(LazyImg);

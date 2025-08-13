@@ -21,7 +21,7 @@ interface GameListProps {
 const BREAKPOINT = {
   sm: 768,
   md: 1024,
-  lg:1680
+  lg: 1680,
 };
 const CARD_SIZE = {
   width: 450,
@@ -45,6 +45,7 @@ const GamesList: FC<GameListProps> = memo(
       count: Math.ceil(games.length / columns),
       getScrollElement: () => parentRef.current,
       estimateSize: () => CARD_SIZE.height + gap.y,
+      overscan: 2,
     });
 
     const columnVirtualizer = useVirtualizer({
@@ -52,6 +53,7 @@ const GamesList: FC<GameListProps> = memo(
       count: columns,
       getScrollElement: () => parentRef.current,
       estimateSize: () => CARD_SIZE.width + gap.x,
+      overscan: 2,
     });
 
     useEffect(() => {
@@ -68,7 +70,7 @@ const GamesList: FC<GameListProps> = memo(
     const getColumnsCount = (width: number) => {
       if (width <= BREAKPOINT.sm) return 1;
       if (width <= BREAKPOINT.md) return 2;
-      if(width <= BREAKPOINT.lg) return 3
+      if (width <= BREAKPOINT.lg) return 3;
       return 4;
     };
     const handleResize = throttle((containerWidth) => {
