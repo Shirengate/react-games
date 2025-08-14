@@ -1,16 +1,3 @@
-/* LazyImg.scss */
-.lazy-img-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.img-skeleton {
-  width: 100%;
-  height: 100%;
-}
-
 .img {
   background-position: 50%;
   background-size: cover;
@@ -23,8 +10,4 @@
   -webkit-transition: opacity 0.3s linear;
   transition: opacity 0.3s linear;
   z-index: 1;
-}
-
-.img.loaded {
-  opacity: 1;
 }

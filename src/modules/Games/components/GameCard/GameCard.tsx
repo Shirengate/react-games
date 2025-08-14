@@ -1,12 +1,15 @@
-import { memo, useState, type FC } from "react";
+import { memo, useRef, useState, type FC } from "react";
 import type { Game } from "../../../../shared/types/responses";
 import "./GameCard.scss";
 import LazyImg from "../UI/LazyImg/LazyImg";
 import {
+  useHover,
   useIntersectionObserver,
   useWindowSize,
 } from "@siberiacancode/reactuse";
-import {NavLink, useHref} from 'react-router'
+import { NavLink } from "react-router";
+import ImgsGalery from "./components/ImgsGalery/ImgsGalery";
+import { Transition } from "react-transition-group";
 interface GameCardProps {
   game: Game;
   hovering: boolean;
@@ -31,10 +34,21 @@ const GameCard: FC<GameCardProps> = ({ game, hovering }) => {
     }
   });
   const chartInfo = `#1 Top ${new Date(game.released).getFullYear()}`;
+  const cardHover = useRef(null);
+  const isCardHover = useHover(cardHover);
+  const nodeRef = useRef(null);
   return (
     <div ref={ref} className={`game-card ${hovering ? "opened" : ""} `}>
-      <div className="game-card__media">
-        <LazyImg src={viewState ? game.background_image : ""} />
+      <div className="game-card__media" ref={cardHover}>
+        <Transition nodeRef={nodeRef} in={isCardHover} timeout={500}>
+          {(state) => (
+            <ImgsGalery
+              stateName={state}
+              screens={game.short_screenshots.slice(1)}
+            />
+          )}
+        </Transition>
+        <LazyImg src={viewState && !isCardHover ? game.background_image : ""} />
       </div>
       <div className="game-card__data">
         <div className="game-card__top">
@@ -53,7 +67,9 @@ const GameCard: FC<GameCardProps> = ({ game, hovering }) => {
           )}
         </div>
 
-        <NavLink to={`/gamed/${game.id}`} className="game-card__name">{game.name}</NavLink>
+        <NavLink to={`/gamed/${game.id}`} className="game-card__name">
+          {game.name}
+        </NavLink>
 
         <button className="game-card__added">
           <span className="game-card__added-plus">+</span>

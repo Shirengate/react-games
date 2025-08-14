@@ -1,0 +1,59 @@
+.game-card__swiper {
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: absolute;
+  background: black;
+  color: white;
+  &.entering {
+    opacity: 1;
+  }
+  &.entered {
+    opacity: 1;
+  }
+  &.exiting {
+    opacity: 0;
+  }
+  &.exited {
+    opacity: 0;
+  }
+}
+.mySwiper {
+  width: 100%;
+  height: 100%;
+}
+.galery {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  transition: all 0.5s;
+}
+.galery.entering {
+  opacity: 1;
+}
+.galery.entered {
+  opacity: 1;
+}
+.galery.exiting {
+  opacity: 0;
+}
+.galery.exited {
+  opacity: 0;
+}
+.imageSrc {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.swiper-pagination-progressbar {
+  background-color: black !important;
+}
+
+.swiper-pagination-progressbar-fill {
+  background-color: lightgray !important;
+}
