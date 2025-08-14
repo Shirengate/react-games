@@ -6,7 +6,7 @@ import {
   useIntersectionObserver,
   useWindowSize,
 } from "@siberiacancode/reactuse";
-
+import {NavLink, useHref} from 'react-router'
 interface GameCardProps {
   game: Game;
   hovering: boolean;
@@ -53,7 +53,7 @@ const GameCard: FC<GameCardProps> = ({ game, hovering }) => {
           )}
         </div>
 
-        <div className="game-card__name">{game.name}</div>
+        <NavLink to={`/gamed/${game.id}`} className="game-card__name">{game.name}</NavLink>
 
         <button className="game-card__added">
           <span className="game-card__added-plus">+</span>

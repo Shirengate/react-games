@@ -59,14 +59,20 @@
 
   &__name {
     font-weight: 700;
+    color: white;
+    text-decoration: none;
     font-size: 24px;
     display: flex;
+    text-underline-offset: 2px;
     width: 100%;
     line-height: 28px;
     align-items: center;
     gap: 6px;
     @media (max-width: 768px) {
       font-size: 16px;
+    }
+    &:hover {
+      text-decoration: underline;
     }
     .target-icon {
       width: 30px;
