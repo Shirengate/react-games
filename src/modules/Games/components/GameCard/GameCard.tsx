@@ -40,7 +40,13 @@ const GameCard: FC<GameCardProps> = ({ game, hovering }) => {
   return (
     <div ref={ref} className={`game-card ${hovering ? "opened" : ""} `}>
       <div className="game-card__media" ref={cardHover}>
-        <Transition nodeRef={nodeRef} in={isCardHover} timeout={500}>
+        <Transition
+          nodeRef={nodeRef}
+          in={isCardHover}
+          timeout={500}
+          unmountOnExit
+          mountOnEnter
+        >
           {(state) => (
             <ImgsGalery
               stateName={state}
