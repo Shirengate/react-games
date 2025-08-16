@@ -16,6 +16,7 @@
     "@types/react-transition-group": "^4.4.12",
     "axios": "^1.11.0",
     "lodash": "^4.17.21",
+    "lodash.debounce": "^4.0.8",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-loading-skeleton": "^3.5.0",

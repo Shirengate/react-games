@@ -1,3 +1,3 @@
 import { gamesReducer } from "../../modules/Games/index";
-
-export { gamesReducer };
+import { searchReducer } from "../../modules/Search";
+export { gamesReducer, searchReducer };

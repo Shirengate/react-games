@@ -1,0 +1,21 @@
+.portal {
+  position: absolute;
+  top: 90px;
+  border-radius: 24px;
+  padding: 0 40px;
+  padding-left: 130px;
+  z-index: 1100;
+  transition: all 0.5s;
+}
+.entering {
+  opacity: 1;
+}
+.entered {
+  opacity: 1;
+}
+.exiting {
+  opacity: 0;
+}
+.exited {
+  opacity: 0;
+}
