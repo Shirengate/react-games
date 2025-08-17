@@ -1,0 +1,79 @@
+.search-teleport {
+  border: 1px solid #222;
+  background: #000;
+  height: 100%;
+  border-radius: 24px;
+  padding: 16px;
+  color: #fff;
+  font-family: Arial, sans-serif;
+}
+
+.search-header {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 16px;
+
+  .title {
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .count {
+    font-size: 16px;
+    font-weight: 400;
+    color: #999;
+  }
+}
+
+.games-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.game-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.game-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #111;
+  flex-shrink: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.game-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.platforms {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  .platform-icon {
+    width: 14px;
+    height: 14px;
+    background: #666; // заглушка под иконки
+    border-radius: 3px;
+  }
+}
+
+.game-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+}

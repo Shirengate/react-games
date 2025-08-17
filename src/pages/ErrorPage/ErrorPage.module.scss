@@ -1,0 +1,72 @@
+.errorPage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  // Серый фон
+  padding: 20px;
+  text-align: center;
+}
+
+.container {
+  max-width: 600px;
+  width: 100%;
+  padding: 40px;
+
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.errorCode {
+  font-size: 6rem;
+  font-weight: 700;
+  color: #d32f2f; // Красный цвет
+  margin: 0;
+  line-height: 1;
+}
+
+.errorTitle {
+  font-size: 2rem;
+  color: #666666;
+  margin: 20px 0 10px;
+}
+
+.errorMessage {
+  font-size: 1.1rem;
+  color: #666666;
+  margin-bottom: 30px;
+}
+
+.homeLink {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #d32f2f; // Красный цвет
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #b71c1c; // Темнее красный при наведении
+  }
+}
+
+// Адаптивность для мобильных устройств
+@media (max-width: 768px) {
+  .errorCode {
+    font-size: 4rem;
+  }
+
+  .errorTitle {
+    font-size: 1.5rem;
+  }
+
+  .errorMessage {
+    font-size: 1rem;
+  }
+
+  .homeLink {
+    padding: 10px 20px;
+  }
+}
